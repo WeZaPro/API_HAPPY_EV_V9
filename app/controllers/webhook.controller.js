@@ -122,15 +122,7 @@ async function processPaymentSuccess(data) {
       return;
     }
 
-    // ถ้าพบ order จะทำงานต่อ เช่น อัพเดตสถานะเพิ่มเติม หรือส่งเมล
-    // console.log("Found order id:", order.order_id);
-    // console.log("Found order:", order.dataValues);
     await saveDataBookingFromWeb(order.dataValues);
-    // ตัวอย่างอัปเดตสถานะ (ถ้าต้องการ)
-    // await order.update({ status: data.status });
-
-    // ตัวอย่างเรียกฟังก์ชันส่งเมล (ต้องเขียนฟังก์ชันนี้เอง)
-    // await sendReceiptEmail(data.customerEmail, order);
 
     // ตัวอย่าง process อื่น ๆ ที่ต้องการ
   } catch (error) {
@@ -194,6 +186,12 @@ async function saveDataBookingFromWeb(data) {
         "none",
         "hold",
       ]
+    );
+
+    // update booking id ==> to order table
+    await Order.update(
+      { booking_id: bookingId },
+      { where: { order_id: data.order_id } }
     );
 
     // console.log(

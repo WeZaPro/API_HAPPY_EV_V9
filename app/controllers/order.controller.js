@@ -104,3 +104,17 @@ exports.getOrderById = async (req, res) => {
     res.status(500).json({ error: "System error" });
   }
 };
+
+// Get All Orders
+exports.getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.findAll({
+      order: [["createdAt", "DESC"]], // เรียงจากล่าสุดไปเก่า
+    });
+
+    res.json(orders);
+  } catch (error) {
+    console.error("🔥 Error fetching all orders:", error);
+    res.status(500).json({ error: "System error" });
+  }
+};
