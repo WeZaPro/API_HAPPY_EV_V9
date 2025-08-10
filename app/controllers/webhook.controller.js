@@ -1,10 +1,12 @@
 require("dotenv").config();
 const pool = require("../config/config.booking");
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const configPayment = require("../config/payment.config");
+const stripe = require("stripe")(configPayment.STRIPE_SECRET_KEY_SET);
 
 const db = require("../models"); // import models ทั้งหมด
 const Order = db.order; // ดึง model order ออกมาใช้
-const endpointSecret = process.env.ENDPOINT_SECRET;
+// const endpointSecret = process.env.ENDPOINT_SECRET;
+const endpointSecret = configPayment.ENDPOINT_SECRET_SET;
 
 // Handle Stripe WebhookSTRIPE_SECRET_KEY
 

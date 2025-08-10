@@ -2,8 +2,10 @@ require("dotenv").config();
 const { v4: uuidv4 } = require("uuid");
 
 const db = require("../models"); // ปรับ path ให้ถูกต้องตามโปรเจกต์คุณ
+const configPayment = require("../config/payment.config");
 const Order = db.order; // หรือ db.Order ขึ้นกับการ export ใน models/index.js
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(configPayment.STRIPE_SECRET_KEY_SET);
+// const stripe = require("stripe")("xxx");
 
 exports.createCheckoutSession = async (req, res) => {
   try {
@@ -52,9 +54,10 @@ exports.createCheckoutSession = async (req, res) => {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.FRONTEND_REDIRECT_PAYMENT}/success.html?order_id=${orderId}`,
-      // success_url: `${process.env.FRONTEND_REDIRECT_PAYMENT}/payment-success.html?order_id=${orderId}`,
-      cancel_url: `${process.env.FRONTEND_REDIRECT_PAYMENT}/cancel.html?order_id=${orderId}`,
+      // success_url: `${process.env.FRONTEND_REDIRECT_PAYMENT}/success.html?order_id=${orderId}`,
+      //cancel_url: `${process.env.FRONTEND_REDIRECT_PAYMENT}/cancel.html?order_id=${orderId}`,
+      success_url: `${process.env.FRONTEND_REDIRECT_PAYMENT}/${process.env.FRONTEND_DIRECTPAGE_SUCCESS}?order_id=${orderId}`,
+      cancel_url: `${process.env.FRONTEND_REDIRECT_PAYMENT}/${process.env.FRONTEND_DIRECTPAGE_CANCEL}?order_id=${orderId}`,
     });
 
     // console.log("session ", session);
