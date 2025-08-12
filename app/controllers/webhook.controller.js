@@ -38,14 +38,9 @@ exports.handleWebhook = async (req, res) => {
           { where: { stripe_session_id: session.id } }
         );
 
-        // หา sessionId จาก DB แทน
-        const relatedOrder = await Order.findOne({
-          where: { stripe_payment_intent_id: paymentIntent.id },
-        });
-
         // ตัวอย่างเรียกฟังก์ชันเพิ่มเติมหลังชำระเงินสำเร็จ
         await processPaymentSuccess({
-          sessionId: relatedOrder?.stripe_session_id || null,
+          sessionId: session.id,
           status: "completed",
           customerName: session.customer_details?.name,
           customerEmail: session.customer_details?.email,
@@ -62,14 +57,9 @@ exports.handleWebhook = async (req, res) => {
           { where: { stripe_payment_intent_id: paymentIntent.id } }
         );
 
-        // หา sessionId จาก DB แทน
-        const relatedOrder = await Order.findOne({
-          where: { stripe_payment_intent_id: paymentIntent.id },
-        });
-
         // ตัวอย่างเรียกฟังก์ชันเพิ่มเติมหลังชำระเงินสำเร็จ
         await processPaymentSuccess({
-          sessionId: relatedOrder?.stripe_session_id || null,
+          sessionId: session.id,
           paymentIntentId: paymentIntent.id,
           status: "succeeded",
           amountReceived: paymentIntent.amount_received,
