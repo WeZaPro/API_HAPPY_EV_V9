@@ -26,7 +26,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       ReturnDate: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       Returnning: {
         type: Sequelize.BOOLEAN, // ใช้ boolean
