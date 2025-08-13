@@ -25,6 +25,11 @@ router.get("/", [authJwt.verifyToken, authJwt.isAdmin], taxiDriver.findAll);
 router.get("/findByLineUserId/:lineId", taxiDriver.findByLineUserId);
 
 router.get("/user", [authJwt.verifyToken, authJwt.isUser], taxiDriver.findAll);
+router.get(
+  "/findTaxiUse",
+  [authJwt.verifyToken, authJwt.isUser],
+  taxiDriver.findTaxiUse
+);
 
 router.put("/", [authJwt.verifyToken, authJwt.isAdmin], taxiDriver.update);
 router.delete("/", [authJwt.verifyToken, authJwt.isAdmin], taxiDriver.delete);
