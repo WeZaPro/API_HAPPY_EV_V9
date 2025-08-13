@@ -14,12 +14,14 @@ module.exports = (sequelize, Sequelize) => {
       },
       phone: {
         type: Sequelize.STRING,
+        unique: true,
       },
       line_name: {
         type: Sequelize.STRING,
       },
       line_user_id: {
         type: Sequelize.STRING,
+        unique: true,
       },
     },
     {
