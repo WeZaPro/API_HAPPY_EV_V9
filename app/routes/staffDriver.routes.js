@@ -10,6 +10,12 @@ router.post(
   // [authJwt.verifyToken, authJwt.isAdmin],
   staffDriver.create_staffDriver
 );
+
+router.put(
+  "/",
+  [authJwt.verifyToken, authJwt.isAdmin],
+  staffDriver.update_staffDriver
+);
 router.get(
   "/",
   [authJwt.verifyToken, authJwt.isAdmin],
