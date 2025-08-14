@@ -1,6 +1,7 @@
 const pool = require("../config/config.booking");
 const db = require("../models"); // โหลด Sequelize models ทั้งหมด
 const TaxiDriver = db.taxiDriver; // เรียกใช้ taxiDriver model
+const StaffDriver = db.staffDriver;
 const User = db.user;
 const Company = db.company;
 //===========Find
@@ -99,6 +100,8 @@ exports.updateTaxiDriver = async (req, res) => {
         .send({ message: "กรุณาระบุข้อมูลที่ต้องการอัปเดต" });
     }
 
+    console.log("req.body ", req.body);
+
     const [updated] = await TaxiDriver.update(req.body, {
       where: { id: id },
     });
@@ -118,6 +121,60 @@ exports.updateTaxiDriver = async (req, res) => {
       .send({ message: err.message || "เกิดข้อผิดพลาดระหว่างอัปเดต" });
   }
 };
+
+// exports.updateTaxiDriver = async (req, res) => {
+//   try {
+//     const id = req.params.id; // ใช้ id จาก URL เช่น /taxidriver/:id
+
+//     if (!req.body || Object.keys(req.body).length === 0) {
+//       return res
+//         .status(400)
+//         .send({ message: "กรุณาระบุข้อมูลที่ต้องการอัปเดต" });
+//     }
+
+//     console.log("req.body ", req.body);
+
+//     // =========================
+//     // 1) Update TaxiDriver table
+//     // =========================
+//     const [updated] = await TaxiDriver.update(req.body, {
+//       where: { id: id },
+//     });
+
+//     if (updated !== 1) {
+//       return res
+//         .status(404)
+//         .send({ message: `ไม่พบ taxi driver ที่มี id = ${id}` });
+//     }
+
+//     // ดึงข้อมูลล่าสุดจาก TaxiDriver
+//     const updatedDriver = await TaxiDriver.findByPk(id);
+
+//     // =========================
+//     // 2) Update StaffDriver table
+//     // =========================
+//     if (updatedDriver.line_user_id) {
+//       console.log("updatedDriver.line_user_id ", updatedDriver.line_user_id);
+//       await StaffDriver.update(
+//         {
+//           driver: req.body.driver,
+//           phone: req.body.phone,
+//         },
+//         {
+//           where: { line_user_id: updatedDriver.line_user_id },
+//         }
+//       );
+//     }
+
+//     // ส่งข้อมูลกลับ
+//     return res.status(200).send(updatedDriver);
+//   } catch (err) {
+//     console.error("❌ Error updating taxi driver:", err);
+//     res
+//       .status(500)
+//       .send({ message: err.message || "เกิดข้อผิดพลาดระหว่างอัปเดต" });
+//   }
+// };
 
 exports.updateUser = async (req, res) => {
   try {

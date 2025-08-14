@@ -135,6 +135,7 @@ exports.findByLineUserId = async (req, res) => {
 // Update driver by id
 
 exports.update = async (req, res) => {
+  console.log("update----->");
   try {
     const { taxi_id } = req.body;
 
