@@ -8,12 +8,46 @@ const { Op } = require("sequelize"); // เพิ่ม import ตัว Op
 // require("dotenv").config();
 const pool = require("../config/config.booking");
 
+// exports.create_byAdmin = async (req, res) => {
+//   try {
+//     const taxi_id = `Ta-${String(Date.now()).slice(-6)}`;
+
+//     const { taxi_lpr } = req.body;
+//     console.log("TaxiDriver Model: ", TaxiDriver);
+//     const newDriver = await TaxiDriver.create({
+//       taxi_id,
+//       taxi_lpr,
+//       driver: null,
+//       line_name: null,
+//       line_user_id: null,
+//       staffDriver_id: null,
+//     });
+
+//     res.status(201).send(newDriver);
+//   } catch (err) {
+//     console.error("🔥 Sequelize error: ", err);
+//     res.status(500).send({ message: err.message, error: err.errors });
+//   }
+// };
+
+// Get all drivers
+
 exports.create_byAdmin = async (req, res) => {
   try {
     const taxi_id = `Ta-${String(Date.now()).slice(-6)}`;
-
     const { taxi_lpr } = req.body;
-    console.log("TaxiDriver Model: ", TaxiDriver);
+
+    // ตรวจสอบว่ามีทะเบียนนี้อยู่แล้วหรือไม่
+    const existTaxi = await TaxiDriver.findOne({
+      where: { taxi_lpr },
+    });
+
+    if (existTaxi) {
+      return res.status(400).json({
+        message: `ทะเบียนรถ ${taxi_lpr} มีอยู่แล้วในระบบ`,
+      });
+    }
+
     const newDriver = await TaxiDriver.create({
       taxi_id,
       taxi_lpr,
@@ -29,8 +63,6 @@ exports.create_byAdmin = async (req, res) => {
     res.status(500).send({ message: err.message, error: err.errors });
   }
 };
-
-// Get all drivers
 
 exports.assignStaffToTaxiDriver = async (req, res) => {
   try {
