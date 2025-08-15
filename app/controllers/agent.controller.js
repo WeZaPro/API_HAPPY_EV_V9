@@ -87,22 +87,6 @@ exports.createBookingFromWeb = async (req, res) => {
     companyName,
   } = req.body;
 
-  // รับค่าจาก web
-  //===================================
-  // currencySymbol ("$")
-  // dateTime = Date_go
-  // email = EMAIL
-  // firstName + " " +lastName + [gender]+[country]= guest
-  // mobile = PHONE
-  // price = PRICE
-  // returnning = RETURN_back (true/false)
-  // returnDateTime = Date_back
-  // start = pickup
-  // destination = dropoff
-  //===================================
-  // const userId = req.userId; // ได้จาก middleware
-  // console.log("guest ", guest);
-
   // ✅ ตรวจสอบค่าบังคับ
   if (!guest || !pickup || !dropoff) {
     return res

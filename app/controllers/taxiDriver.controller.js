@@ -37,20 +37,27 @@ exports.create_byAdmin = async (req, res) => {
     const taxi_id = `Ta-${String(Date.now()).slice(-6)}`;
     const { taxi_lpr } = req.body;
 
-    // ตรวจสอบว่ามีทะเบียนนี้อยู่แล้วหรือไม่
+    // ฟังก์ชันจัดรูปแบบทะเบียน
+    const normalizePlate = (plate) => plate.replace(/\s+/g, " ").trim();
+
+    // จัดรูปทะเบียนก่อนใช้
+    const plate = normalizePlate(taxi_lpr);
+
+    // ตรวจสอบซ้ำ
     const existTaxi = await TaxiDriver.findOne({
-      where: { taxi_lpr },
+      where: { taxi_lpr: plate },
     });
 
     if (existTaxi) {
       return res.status(400).json({
-        message: `ทะเบียนรถ ${taxi_lpr} มีอยู่แล้วในระบบ`,
+        message: `ทะเบียน "${plate}" มีอยู่แล้วในระบบ`,
       });
     }
 
+    // บันทึกข้อมูลใหม่
     const newDriver = await TaxiDriver.create({
       taxi_id,
-      taxi_lpr,
+      taxi_lpr: plate, // ใช้ค่าที่ normalize แล้ว
       driver: null,
       line_name: null,
       line_user_id: null,
